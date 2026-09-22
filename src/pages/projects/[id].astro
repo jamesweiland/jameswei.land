@@ -1,11 +1,11 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
-import ProjectPreview from '../../components/ProjectPreview.astro';
+import { type CollectionEntry, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { sortItemsByDateDesc } from '../../utils/data-utils';
+import PostPreview from "../../components/PostPreview.astro";
+import { getProjects, getPostsByProject } from '../../utils/data-utils';
 
 export async function getStaticPaths() {
-    const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
+    const projects = await getProjects();
     const projectCount = projects.length;
     return projects.map((project, index) => ({
         params: { id: project.id },
@@ -19,13 +19,12 @@ export async function getStaticPaths() {
 
 type Props = {
     project: CollectionEntry<'projects'>;
-    prevProject: CollectionEntry<'projects'>;
-    nextProject: CollectionEntry<'projects'>;
 };
 
-const { project, prevProject, nextProject } = Astro.props;
+const { project } = Astro.props;
 const { title, description, seo } = project.data;
 const { Content } = await render(project);
+const relatedPosts = await getPostsByProject(project.id);
 ---
 
 <BaseLayout
@@ -44,11 +43,13 @@ const { Content } = await render(project);
         </div>
     </article>
     {
-        (prevProject || nextProject) && (
+    relatedPosts.length > 0 && (
             <div class="my-16 sm:my-24">
-                <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">View Next</h2>
-                {nextProject && <ProjectPreview project={nextProject} class="mb-10 sm:mb-12" headingLevel="h3" />}
-                {prevProject && <ProjectPreview project={prevProject} class="mb-10 sm:mb-12" headingLevel="h3" />}
+                <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">Related Posts</h2>
+                {relatedPosts.map((post) => (
+                    <PostPreview post={post} class="mb-10 sm:mb-12" headingLevel="h3" />
+                )
+                )}
             </div>
         )
     }

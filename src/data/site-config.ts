@@ -1,76 +1,45 @@
-import avatar from '../assets/images/avatar.jpg';
-import hero from '../assets/images/hero.jpg';
+import hero from '../assets/images/lions_head.jpeg';
 import type { SiteConfig } from '../types';
 
 const siteConfig: SiteConfig = {
-    website: 'https://example.com',
-    avatar: {
-        src: avatar,
-        alt: 'Ethan Donovan'
-    },
-    title: 'Dante',
-    subtitle: 'Minimal Astro.js theme',
-    description: 'Astro.js and Tailwind CSS theme for blog and portfolio by justgoodui.com',
-    image: {
-        src: '/dante-preview.jpg',
-        alt: 'Dante - Astro.js and Tailwind CSS theme'
-    },
+    website: 'https://jameswei.land',
+    title: 'James Weiland',
+    subtitle: 'Software Engineer based in NYC',
+    description: 'My website to show off my portfolio and interests',
     headerNavLinks: [
         {
             text: 'Home',
             href: '/'
         },
         {
-            text: 'Projects',
-            href: '/projects'
+            text: 'About Me',
+            href: '/about'
         },
         {
             text: 'Blog',
             href: '/blog'
         },
         {
-            text: 'Tags',
-            href: '/tags'
-        }
-    ],
-    footerNavLinks: [
-        {
-            text: 'About',
-            href: '/about'
+            text: 'Projects',
+            href: '/projects'
         },
         {
             text: 'Contact',
             href: '/contact'
-        },
-        {
-            text: 'Terms',
-            href: '/terms'
-        },
-        {
-            text: 'Download theme',
-            href: 'https://github.com/JustGoodUI/dante-astro-theme'
         }
     ],
-    socialLinks: [
+    footerNavLinks: [
         {
-            text: 'Dribbble',
-            href: 'https://dribbble.com/'
+            text: 'View the source code',
+            href: 'https://github.com/jweiland/portfolio'
         },
-        {
-            text: 'Instagram',
-            href: 'https://instagram.com/'
-        },
-        {
-            text: 'X/Twitter',
-            href: 'https://twitter.com/'
-        }
     ],
     hero: {
-        title: 'Hi There & Welcome to My Corner of the Web!',
-        text: "I'm **Ethan Donovan**, a web developer at Amazing Studio, dedicated to the realms of collaboration and artificial intelligence.\nMy approach involves embracing intuition, conducting just enough research, and leveraging aesthetics as a catalyst for exceptional products.\nI have a profound appreciation for top-notch software, visual design, and the principles of product-led growth.\n\nFeel free to explore some of my coding endeavors on [GitHub](https://github.com/JustGoodUI/dante-astro-theme) or follow me on [Twitter/X](https://twitter.com/justgoodui).",
+        title: 'Welcome to my website!',
         image: {
             src: hero,
-            alt: 'A person sitting at a desk in front of a computer'
+            alt: 'Me at the top of Lion\'s Head in Cape Town, South Africa',
+            caption: 'Me at the top of Lion\'s Head in Cape Town, South Africa' 
         },
         actions: [
             {
@@ -80,7 +49,7 @@ const siteConfig: SiteConfig = {
         ]
     },
     subscribe: {
-        enabled: true,
+        enabled: false,
         title: 'Subscribe to Dante Newsletter',
         text: 'One update per week. All the latest posts directly in your inbox.',
         form: {

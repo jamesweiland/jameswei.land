@@ -3,16 +3,16 @@ import { marked } from 'marked';
 import type { Hero as HeroProps } from '../types';
 import Button from './Button.astro';
 import CustomImage from './CustomImage.astro';
+import {getEntry, render} from "astro:content";
 
-type Props = HeroProps;
-
-const { title, image, text, actions } = Astro.props;
+const entry = await getEntry('pages', 'hero')
+const {Content} = await render(entry);
 ---
 
 {
     (title || image?.src || text || (actions && actions.length > 0)) && (
         <section class="mb-16 flex w-full flex-col gap-8 sm:mb-24">
-            {title && <h1 class="font-serif text-3xl leading-tight font-medium sm:text-5xl sm:leading-tight">{title}</h1>}
+            {title && <h1 class="font-serif text-3xl leading-tight font-medium sm:text-5xl sm:leading-tight">Welcome to my website!</h1>}
             {image?.src && (
                 <figure>
                     <CustomImage

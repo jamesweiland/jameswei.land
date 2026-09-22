@@ -1,15 +1,16 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
+import { type CollectionEntry, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import PostPreview from '../../components/PostPreview.astro';
 import Subscribe from '../../components/Subscribe.astro';
-import { sortItemsByDateDesc } from '../../utils/data-utils';
+import { getBlogPosts } from '../../utils/data-utils';
 import { slugify } from '../../utils/common-utils';
 
 export async function getStaticPaths() {
-    const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
+
+    const posts = await getBlogPosts();
     const postCount = posts.length;
     return posts.map((post, index) => ({
         params: { id: post.id },
@@ -69,15 +70,6 @@ const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
             >
         </div>
     </article>
-    {
-        (prevPost || nextPost) && (
-            <div class="my-16 sm:my-24">
-                <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">Read Next</h2>
-                {nextPost && <PostPreview post={nextPost} class="mb-10 sm:mb-12" headingLevel="h3" />}
-                {prevPost && <PostPreview post={prevPost} class="mb-10 sm:mb-12" headingLevel="h3" />}
-            </div>
-        )
-    }
     <Subscribe class="my-16 sm:my-24" />
 </BaseLayout>
 

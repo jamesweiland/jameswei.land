@@ -1,6 +1,6 @@
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { defineCollection, type ImageFunction } from 'astro:content';
+import { defineCollection, reference, type ImageFunction } from 'astro:content';
 
 const imageSchema = (image: ImageFunction) =>
     z.object({
@@ -22,10 +22,11 @@ const blog = defineCollection({
         z.object({
             title: z.string(),
             excerpt: z.string().optional(),
-            publishDate: z.coerce.date(),
             updatedDate: z.coerce.date().optional(),
             isFeatured: z.boolean().default(false),
+            isPrivate: z.boolean().default(false),
             tags: z.array(z.string()).default([]),
+            project: reference('projects').optional(),
             seo: seoSchema(image).optional()
         })
 });
@@ -45,10 +46,17 @@ const projects = defineCollection({
         z.object({
             title: z.string(),
             description: z.string().optional(),
-            publishDate: z.coerce.date(),
+            publishDate: z.coerce.date().optional(),
             isFeatured: z.boolean().default(false),
+            isPrivate: z.boolean().default(false),
             seo: seoSchema(image).optional()
         })
 });
 
-export const collections = { blog, pages, projects };
+// one off stuff
+const siteContent = defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/site' }),
+    schema: z.object({})
+});
+
+export const collections = { blog, pages, projects, siteContent };

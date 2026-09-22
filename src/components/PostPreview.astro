@@ -2,11 +2,13 @@
 import { type CollectionEntry } from 'astro:content';
 import ArrowRight from '../assets/icons/arrow-right.svg';
 import FormattedDate from './FormattedDate.astro';
+import {getGitPublishDate} from '../utils/data-utils'
 
 type Props = { post: CollectionEntry<'blog'>; class?: string; headingLevel?: 'h2' | 'h3' };
 
 const { post, class: className, headingLevel = 'h2' } = Astro.props;
-const { title, publishDate, updatedDate, excerpt } = post.data;
+const { title, updatedDate, excerpt } = post.data;
+const publishDate = post.data?.publishDate ?? getGitPublishDate(post.id)
 const TitleTag = headingLevel;
 ---
 

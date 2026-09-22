@@ -1,22 +1,30 @@
 ---
-import { getCollection } from 'astro:content';
 import Button from '../components/Button.astro';
-import Hero from '../components/Hero.astro';
 import PostPreview from '../components/PostPreview.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
 import siteConfig from '../data/site-config';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { sortItemsByDateDesc } from '../utils/data-utils';
+import { getBlogPosts, getProjects } from '../utils/data-utils';
+import { getEntry, render } from 'astro:content';
 
-const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
+
+const posts = await getBlogPosts();
 const featuredPosts = posts.filter(({ data }) => data.isFeatured);
 
-const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
+const projects = await getProjects();
 const featuredProjects = projects.filter(({ data }) => data.isFeatured);
+
+const heroEntry = await getEntry('siteContent', 'hero');
+const HeroContent = heroEntry ? (await render(heroEntry)).Content : null;
 ---
 
 <BaseLayout description={siteConfig.description}>
-    <Hero {...siteConfig.hero} />
+{
+    HeroContent &&
+    <section class="prose sm:prose-lg prose-blockquote:not-italic prose-blockquote:font-normal prose-blockquote:text-base sm:prose-blockquote:text-lg prose-blockquote:border-l-4 prose-blockquote:pl-5 prose-blockquote:before:content-none prose-blockquote:after:content-none mb-12 max-w-none sm:mb-20">
+        <HeroContent />
+    </section>
+}
     {
         featuredProjects?.length > 0 && (
             <div class="mb-16 sm:mb-24">
@@ -33,7 +41,7 @@ const featuredProjects = projects.filter(({ data }) => data.isFeatured);
     {
         featuredPosts?.length > 0 && (
             <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">Writing</h2>
+                <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">Blog</h2>
                 {featuredPosts.map((post) => (
                     <PostPreview post={post} class="mb-10 sm:mb-12" headingLevel="h3" />
                 ))}

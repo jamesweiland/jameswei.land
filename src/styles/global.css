@@ -9,12 +9,14 @@
 
 :root {
     --text-main: #171717;
+    --text-muted: #6b6b6b;
     --bg-main: #f2f1ec;
     --bg-muted: #eae9e1;
     --border-main: #171717;
 }
 html.dark {
     --text-main: #f2f1ec;
+    --text-muted: #a3a3a3;
     --bg-main: #171717;
     --bg-muted: #242424;
     --border-main: #f2f1ec;
@@ -56,6 +58,7 @@ html.dark {
     --font-sans: 'Inter Variable', sans-serif;
     --font-serif: 'Newsreader Variable', serif;
     --text-color-main: var(--text-main);
+    --text-color-muted: var(--text-muted);
     --background-color-main: var(--bg-main);
     --background-color-muted: var(--bg-muted);
     --border-color-main: var(--border-main);
@@ -92,7 +95,53 @@ html.dark {
         @apply font-medium;
     }
 
-    .prose blockquote {
-        @apply font-serif font-normal italic border-none pl-0 text-[1.375em] leading-snug sm:text-[1.66667em];
+    .prose :not(pre) > code::before,
+    .prose :not(pre) > code::after {
+        content: none;
     }
+
+    .prose blockquote {
+        @apply border-l-2 my-0 pl-5 font-serif text-xl leading-snug font-normal not-italic sm:text-2xl;
+    }
+
+
+    .prose figure.quote {
+        @apply mt-0 mb-12 sm:mb-16;
+    }
+
+    .prose figure.quote blockquote p {
+        @apply my-0;
+    }
+
+    .prose figure.quote figcaption {
+        @apply mt-0 pl-5 font-sans text-base;
+        color: var(--text-color-muted);
+    }
+
+    .prose figure.quote figcaption a {
+        @apply mt-0 hover:underline;
+        color: var(--text-color-muted);
+    }
+}
+
+.toolbox-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+gap: 1rem;
+margin: 1.5rem 0;
+}
+.toolbox-card {
+border: 1px solid var(--border, #333);
+border-radius: 8px;
+padding: 1rem;
+}
+.toolbox-card h3 {
+margin: 0 0 0.5rem;
+font-size: 0.9rem;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+color: var(--text-muted);
+}
+.toolbox-card p {
+margin: 0;
 }
