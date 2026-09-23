@@ -103,6 +103,13 @@ html.dark {
     .prose blockquote {
         @apply border-l-2 my-0 pl-5 font-serif text-xl leading-snug font-normal not-italic sm:text-2xl;
     }
+    .prose blockquote.quote-compact {
+        @apply text-lg sm:text-xl;
+    }
+    .prose blockquote.quote-compact p:first-of-type::before,
+    .prose blockquote.quote-compact p:last-of-type::after {
+        content: none;
+    }
 
 
     .prose figure.quote {

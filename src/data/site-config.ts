@@ -39,7 +39,7 @@ const siteConfig: SiteConfig = {
         image: {
             src: hero,
             alt: 'Me at the top of Lion\'s Head in Cape Town, South Africa',
-            caption: 'Me at the top of Lion\'s Head in Cape Town, South Africa' 
+            caption: 'This is a picture of me at the top of Lion\'s Head in Cape Town that I thought looked cool.' 
         },
         actions: [
             {

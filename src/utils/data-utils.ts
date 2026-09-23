@@ -3,7 +3,9 @@ import { slugify } from './common-utils';
 import {execSync} from 'node:child_process';
 
 export function sortItemsByDateDesc(itemA: CollectionEntry<'blog' | 'projects'>, itemB: CollectionEntry<'blog' | 'projects'>) {
-    return itemB.data.publishDate.getTime() - new Date(itemA.data.publishDate).getTime();
+    const itemAPublishDate = getGitPublishDate(itemA.id);
+    const itemBPublishDate = getGitPublishDate(itemB.id);
+    return (itemBPublishDate.getTime()) - (itemAPublishDate.getTime());
 }
 
 export function getAllTags(posts: CollectionEntry<'blog'>[]) {
@@ -38,9 +40,9 @@ export function getGitPublishDate(fp: string) {
         return output ? new Date(output) : new Date();
     } catch (e) {
         console.warn(`An error occurred getting the publish date for ${fp}: ${e?.message}`)
+        return new Date();
     }
 }
-
 
 // filter by isPrivate, sort by date
 

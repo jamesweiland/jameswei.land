@@ -1,6 +1,5 @@
 ---
-title: Setting up and containerizing pihole, unbound, and wireguard
-excerpt: How to run pihole, unbound, and wireguard together
+title: Setting Up and Containerizing Pihole, Unbound, and Wireguard
 isFeatured: true
 ---
 I recently started running pihole, unbound, and wireguard together on my home network. I wanted each service to run in a separate container, but that presented some issues with network interactions between the services. This post is a guide to show how I set it up.

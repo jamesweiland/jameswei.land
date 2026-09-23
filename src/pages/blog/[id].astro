@@ -5,7 +5,7 @@ import Button from '../../components/Button.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import PostPreview from '../../components/PostPreview.astro';
 import Subscribe from '../../components/Subscribe.astro';
-import { getBlogPosts } from '../../utils/data-utils';
+import { getBlogPosts, getGitPublishDate } from '../../utils/data-utils';
 import { slugify } from '../../utils/common-utils';
 
 export async function getStaticPaths() {
@@ -25,8 +25,9 @@ export async function getStaticPaths() {
 type Props = { post: CollectionEntry<'blog'>; prevPost: CollectionEntry<'blog'>; nextPost: CollectionEntry<'blog'> };
 
 const { post, prevPost, nextPost } = Astro.props;
-const { title, publishDate, updatedDate, excerpt, tags = [], seo } = post.data;
+const { title, updatedDate, excerpt, tags = [], seo } = post.data;
 const { Content } = await render(post);
+const publishDate = getGitPublishDate(post.id);
 
 // Use the configured `site` to generate an absolute URL
 const shareUrl = new URL(Astro.url.pathname, Astro.site).href;
