@@ -16,8 +16,8 @@ const seoSchema = (image: ImageFunction) =>
         pageType: z.enum(['website', 'article']).optional()
     });
 
-const blog = defineCollection({
-    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
+const posts = defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/posts' }),
     schema: ({ image }) =>
         z.object({
             title: z.string(),
@@ -58,4 +58,4 @@ const siteContent = defineCollection({
     schema: z.object({})
 });
 
-export const collections = { blog, pages, projects, siteContent };
+export const collections = { posts, pages, projects, siteContent };

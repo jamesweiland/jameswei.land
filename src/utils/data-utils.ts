@@ -2,13 +2,13 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { slugify } from './common-utils';
 import {execSync} from 'node:child_process';
 
-export function sortItemsByDateDesc(itemA: CollectionEntry<'blog' | 'projects'>, itemB: CollectionEntry<'blog' | 'projects'>) {
+export function sortItemsByDateDesc(itemA: CollectionEntry<'posts' | 'projects'>, itemB: CollectionEntry<'posts' | 'projects'>) {
     const itemAPublishDate = getGitPublishDate(itemA.id);
     const itemBPublishDate = getGitPublishDate(itemB.id);
     return (itemBPublishDate.getTime()) - (itemAPublishDate.getTime());
 }
 
-export function getAllTags(posts: CollectionEntry<'blog'>[]) {
+export function getAllTags(posts: CollectionEntry<'posts'>[]) {
     const tags: string[] = [...new Set(posts.flatMap((post) => post.data.tags || []).filter(Boolean))];
     return tags
         .map((tag) => {
@@ -22,13 +22,13 @@ export function getAllTags(posts: CollectionEntry<'blog'>[]) {
         });
 }
 
-export function getPostsByTag(posts: CollectionEntry<'blog'>[], tagId: string) {
-    const filteredPosts: CollectionEntry<'blog'>[] = posts.filter((post) => (post.data.tags || []).map((tag) => slugify(tag)).includes(tagId));
+export function getPostsByTag(posts: CollectionEntry<'posts'>[], tagId: string) {
+    const filteredPosts: CollectionEntry<'posts'>[] = posts.filter((post) => (post.data.tags || []).map((tag) => slugify(tag)).includes(tagId));
     return filteredPosts;
 }
 
 export async function getPostsByProject(projectId: string) {
-    const posts = await getBlogPosts();
+    const posts = await getPosts();
     return posts.filter((post) => post.data.project?.id === projectId);
 }
 
@@ -46,8 +46,8 @@ export function getGitPublishDate(fp: string) {
 
 // filter by isPrivate, sort by date
 
-export async function getBlogPosts() {
-    return (await getCollection("blog", ({data}) => import.meta.env.PROD ? !data.isPrivate : true)).sort(sortItemsByDateDesc);
+export async function getPosts() {
+    return (await getCollection("posts", ({data}) => import.meta.env.PROD ? !data.isPrivate : true)).sort(sortItemsByDateDesc);
 }
 
 export async function getProjects() {

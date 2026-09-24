@@ -12,26 +12,36 @@ const siteConfig: SiteConfig = {
             href: '/'
         },
         {
-            text: 'About Me',
+            text: 'About',
             href: '/about'
         },
         {
-            text: 'Blog',
-            href: '/blog'
+            text: 'Posts',
+            href: '/posts'
         },
         {
             text: 'Projects',
             href: '/projects'
         },
-        {
-            text: 'Contact',
-            href: '/contact'
-        }
     ],
     footerNavLinks: [
         {
-            text: 'View the source code',
-            href: 'https://github.com/jweiland/portfolio'
+            text: 'Contact',
+            href: '/contact'
+        },
+        {
+            text: 'View the source code for this website',
+            href: 'https://github.com/jamesweiland/portfolio'
+        },
+    ],
+    socialLinks: [
+        {
+            src: "linkedin.png",
+            href: "https://www.linkedin.com/in/james-w-855481140/",
+        },
+        {
+            src: "github.png",
+            href: "https://github.com/jamesweiland"
         },
     ],
     hero: {

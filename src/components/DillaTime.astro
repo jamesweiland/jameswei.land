@@ -1,0 +1,41 @@
+---
+export interface Props {
+    size?: string;
+    class?: string;
+}
+
+const {size = '200px', class: className = ''} = Astro.props;
+---
+
+<div
+    class:list={['dilla-donut', 'mx-auto', 'my-auto', className]}
+    style={`width: ${size}; height: ${size}; color: var(--text-main);`}
+>
+    <svg viewBox="-9.00 -9.00 618.00 618.00" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor">
+      <circle cx="300" cy="300" r="80.00" stroke-width="14" />
+      <circle cx="300" cy="300" r="135.00" stroke-width="8" />
+      <circle cx="300" cy="300" r="190.00" stroke-width="8" />
+      <circle cx="300" cy="300" r="245.00" stroke-width="8" />
+      <circle cx="300" cy="300" r="300.00" stroke-width="14" />
+      <line x1="235.28" y1="347.02" x2="190.78" y2="379.35" stroke-width="8" />
+      <line x1="220.00" y1="300.00" x2="165.00" y2="300.00" stroke-width="8" />
+      <line x1="364.72" y1="252.98" x2="409.22" y2="220.65" stroke-width="8" />
+      <line x1="300.00" y1="435.00" x2="300.00" y2="490.00" stroke-width="8" />
+      <line x1="165.00" y1="300.00" x2="110.00" y2="300.00" stroke-width="8" />
+      <line x1="300.00" y1="165.00" x2="300.00" y2="110.00" stroke-width="8" />
+      <line x1="119.30" y1="358.71" x2="66.99" y2="375.71" stroke-width="8" />
+      <line x1="480.70" y1="241.29" x2="533.01" y2="224.29" stroke-width="8" />
+      <line x1="521.68" y1="404.32" x2="571.45" y2="427.73" stroke-width="8" />
+      <line x1="155.99" y1="498.21" x2="123.66" y2="542.71" stroke-width="8" />
+      <line x1="66.99" y1="224.29" x2="14.68" y2="207.29" stroke-width="8" />
+      <line x1="375.71" y1="66.99" x2="392.71" y2="14.68" stroke-width="8" />
+    </svg>
+</div>
+
+<style>
+    .dilla-donut svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+</style>

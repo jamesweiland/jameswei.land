@@ -2,9 +2,9 @@
 import ArrowRight from '../../assets/icons/arrow-right.svg';
 import Subscribe from '../../components/Subscribe.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllTags, getPostsByTag, getBlogPosts } from '../../utils/data-utils';
+import { getAllTags, getPostsByTag, getPosts } from '../../utils/data-utils';
 
-const posts = await getBlogPosts();
+const posts = await getPosts();
 const tags = getAllTags(posts).sort((tagA, tagB) => {
     const postCountTagA = getPostsByTag(posts, tagA.id).length;
     const postCountTagB = getPostsByTag(posts, tagB.id).length;

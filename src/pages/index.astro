@@ -4,11 +4,12 @@ import PostPreview from '../components/PostPreview.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
 import siteConfig from '../data/site-config';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getBlogPosts, getProjects } from '../utils/data-utils';
+import { getPosts, getProjects } from '../utils/data-utils';
 import { getEntry, render } from 'astro:content';
+import DillaTime from "../components/DillaTime.astro";
 
 
-const posts = await getBlogPosts();
+const posts = await getPosts();
 const featuredPosts = posts.filter(({ data }) => data.isFeatured);
 
 const projects = await getProjects();
@@ -19,12 +20,13 @@ const HeroContent = heroEntry ? (await render(heroEntry)).Content : null;
 ---
 
 <BaseLayout description={siteConfig.description}>
-{
-    HeroContent &&
-    <section class="prose sm:prose-lg prose-blockquote:not-italic prose-blockquote:font-normal prose-blockquote:text-base sm:prose-blockquote:text-lg prose-blockquote:border-l-4 prose-blockquote:pl-5 prose-blockquote:before:content-none prose-blockquote:after:content-none mb-12 max-w-none sm:mb-20">
-        <HeroContent />
-    </section>
-}
+    <DillaTime size="250px" class="mb-12" />
+    {
+        HeroContent &&
+        <section class="prose sm:prose-lg prose-blockquote:not-italic prose-blockquote:font-normal prose-blockquote:text-base sm:prose-blockquote:text-lg prose-blockquote:border-l-4 prose-blockquote:pl-5 prose-blockquote:before:content-none prose-blockquote:after:content-none max-w-none sm:mb-20">
+            <HeroContent />
+        </section>
+    }
     {
         featuredProjects?.length > 0 && (
             <div class="mb-16 sm:mb-24">
@@ -41,14 +43,17 @@ const HeroContent = heroEntry ? (await render(heroEntry)).Content : null;
     {
         featuredPosts?.length > 0 && (
             <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">Blog</h2>
+                <h2 class="mb-12 font-serif text-xl italic sm:mb-16 sm:text-2xl">Posts</h2>
                 {featuredPosts.map((post) => (
                     <PostPreview post={post} class="mb-10 sm:mb-12" headingLevel="h3" />
                 ))}
                 <div class="mt-12 sm:mt-16">
-                    <Button href="/blog">View All Posts</Button>
+                    <Button href="/posts">View All Posts</Button>
                 </div>
             </div>
         )
     }
+    <div class="prose max-w-none">
+        <small class="text-muted">The image at the top of this page is a donut-ified version of <a class="text-muted" href="https://dillati.me/">Dan Charnas' Dilla Time grid</a> I generated with <a class="text-muted" href="/dilla-time-donut.svg.txt">this svg code</a></small>
+    </div>
 </BaseLayout>

@@ -6,10 +6,10 @@ import PostPreview from '../../../components/PostPreview.astro';
 import Subscribe from '../../../components/Subscribe.astro';
 import siteConfig from '../../../data/site-config';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllTags, getPostsByTag, getBlogPosts } from '../../../utils/data-utils';
+import { getAllTags, getPostsByTag, getPosts } from '../../../utils/data-utils';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-    const posts = await getBlogPosts();
+    const posts = await getPosts();
     const tags = getAllTags(posts);
 
     return tags.flatMap((tag) => {
@@ -21,21 +21,21 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     });
 }
 
-type Props = { page: Page<CollectionEntry<'blog'>> };
+type Props = { page: Page<CollectionEntry<'posts'>> };
 
 const { page } = Astro.props;
-const blog = page.data;
+const posts = page.data;
 const params = Astro.params;
-const allPosts = await getBlogPosts();
+const allPosts = await getPosts();
 const allTags = getAllTags(allPosts);
 const currentTag = allTags.find((tag) => {
     return tag.id === params.id;
 });
 ---
 
-<BaseLayout title={`Posts Tagged ${currentTag?.name}`} description={`Explore a curated collection of blog posts under ${currentTag?.name}`} showHeader={false}>
+<BaseLayout title={`Posts Tagged ${currentTag?.name}`} description={`Explore a curated collection of posts under ${currentTag?.name}`} showHeader={false}>
     <h1 class="mb-12 font-serif text-2xl leading-tight italic sm:mb-16 sm:text-4xl">Posts Tagged "{currentTag?.name}"</h1>
-    {blog.map((post) => <PostPreview post={post} class="mb-10 sm:mb-12" />)}
+    {posts.map((post) => <PostPreview post={post} class="mb-10 sm:mb-12" />)}
     <Pagination page={page} class="my-16 sm:my-24" />
     <Subscribe class="my-16 sm:my-24" />
 </BaseLayout>

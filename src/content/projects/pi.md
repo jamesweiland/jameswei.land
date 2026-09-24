@@ -11,7 +11,7 @@ I use my Raspberry Pi as a home server to host mostly third-party applications, 
 - A CRON job that runs a script I use for work. It checks my GitLab MRs for any new comments, then pings a private Slack channel with the comment. I didn't like having to check my email 
 - This website!
 
-Setting up pihole, unbound, and wireguard in containers was not as straightforward as I would've liked it to be; I've got a separate [blog post](/blog/pihole-unbound-wireguard) explaining how to set those up so they can interact together. Check it out if you're interested in replicating the setup for yourself.
+Setting up pihole, unbound, and wireguard in containers was not as straightforward as I would've liked it to be; I've got a separate [post](/posts/pihole-unbound-wireguard) explaining how to set those up so they can interact together. Check it out if you're interested in replicating the setup for yourself.
 
 I consider this an "ongoing project" as there are a few more services I'd like to add. At the moment, the most pressing is some containerized "checkhealth" daemon that alerts my phone for unhealthy containers. I've learned that people you live with get really annoyed when the wifi goes down!
 

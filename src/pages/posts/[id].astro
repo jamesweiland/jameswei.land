@@ -3,14 +3,13 @@ import { type CollectionEntry, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
-import PostPreview from '../../components/PostPreview.astro';
 import Subscribe from '../../components/Subscribe.astro';
-import { getBlogPosts, getGitPublishDate } from '../../utils/data-utils';
+import { getPosts, getGitPublishDate } from '../../utils/data-utils';
 import { slugify } from '../../utils/common-utils';
 
 export async function getStaticPaths() {
 
-    const posts = await getBlogPosts();
+    const posts = await getPosts();
     const postCount = posts.length;
     return posts.map((post, index) => ({
         params: { id: post.id },
@@ -22,7 +21,7 @@ export async function getStaticPaths() {
     }));
 }
 
-type Props = { post: CollectionEntry<'blog'>; prevPost: CollectionEntry<'blog'>; nextPost: CollectionEntry<'blog'> };
+type Props = { post: CollectionEntry<'posts'>; prevPost: CollectionEntry<'posts'>; nextPost: CollectionEntry<'posts'> };
 
 const { post, prevPost, nextPost } = Astro.props;
 const { title, updatedDate, excerpt, tags = [], seo } = post.data;
