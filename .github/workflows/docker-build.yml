@@ -1,0 +1,66 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/james-weiland:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+  
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Install Wireguard
+        run: sudo apt update && sudo apt install -y wireguard openssh-client
+
+      - name: Bring up Wireguard tunnel
+        run: |
+          echo "${{ secrets.WG_CONFIG }}" | sudo tee /etc/wireguard/wg0.conf > /dev/null
+          sudo chmod 600 /etc/wireguard/wg0.conf
+          echo "starting wg-quick"
+          sudo wg-quick up wg0
+          echo "wg0 is up"
+          sudo wg show
+
+      - name: SSH in and deploy container
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          echo "attempting to ssh"
+          ssh -v -o StrictHostKeyChecking=no -o ConnectTimeout=15 -i ~/.ssh/deploy_key \
+            ${{ secrets.PI_USER }}@${{ secrets.PI_LAN_IP }} \
+            "cd ./pi-services && docker compose pull james-weiland && docker compose up james-weiland -d"
+
+      - name: Tear down Wireguard
+        if: always()
+        run: sudo wg-quick down wg0
