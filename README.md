@@ -1,5 +1,5 @@
 The source code for https://jameswei.land
 
 To-dos:
-- host!
+- ~~host!~~
 - add /etc tab
