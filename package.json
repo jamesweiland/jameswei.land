@@ -6,6 +6,8 @@
         "node": ">=22.12.0"
     },
     "scripts": {
+        "predev": "node scripts/generate-publish-dates.mjs",
+        "prebuild": "node scripts/generate-publish-dates.mjs",
         "dev": "astro dev",
         "start": "astro dev",
         "build": "astro build",

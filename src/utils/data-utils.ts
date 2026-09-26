@@ -1,8 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { slugify } from './common-utils';
-import {execSync} from 'node:child_process';
-import { globSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
 
 export function sortItemsByDateDesc(itemA: CollectionEntry<'posts' | 'projects'>, itemB: CollectionEntry<'posts' | 'projects'>) {
     const itemAPublishDate = getGitPublishDate(itemA.id);
@@ -34,20 +32,20 @@ export async function getPostsByProject(projectId: string) {
     return posts.filter((post) => post.data.project?.id === projectId);
 }
 
+let publishDates: Record<string, string> = {};
+const datesPath = "src/publish-dates.json";
+
+if (existsSync(datesPath)) {
+    publishDates = JSON.parse(readFileSync(datesPath, 'utf-8'));
+} else {
+    console.warn(`${datesPath} not found!`)
+}
+
 // this takes either a project or post id
 export function getGitPublishDate(id: string) {
-    // absolute from project root
-    // note that this means we can't have duplicate ids across posts vs projects. i think this is ok
-    const absoluteFilePath = globSync(join(process.cwd(), 'src/content/**', `${id}.{md,mdx}`))
-    try {
-        const output = execSync(
-            `git log --follow --diff-filter=A --format=%aI -- "${absoluteFilePath}"`, {encoding: 'utf-8'}
-        ).trim();
-        return output ? new Date(output) : new Date();
-    } catch (e) {
-        console.warn(`An error occurred getting the publish date for ${id}: ${e?.message}`)
-        return new Date();
-    }
+    console.log(`getGitPublishDate called with: ${id}`)
+    const date = publishDates[id];
+    return date ? new Date(date) : new Date();
 }
 
 // filter by isPrivate, sort by date
