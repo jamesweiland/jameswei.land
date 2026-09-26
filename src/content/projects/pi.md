@@ -15,4 +15,4 @@ Setting up pihole, unbound, and wireguard in containers was not as straightforwa
 
 I consider this an "ongoing project" as there are a few more services I'd like to add. At the moment, the most pressing is some containerized "checkhealth" daemon that alerts my phone for unhealthy containers. I've learned that people you live with get really annoyed when the wifi goes down!
 
-You can see the actual Docker compose configuration [here](TODO).
+You can see the actual Docker compose configuration [here](https://github.com/jamesweiland/pi-services).
