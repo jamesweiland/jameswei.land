@@ -1,6 +1,8 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { slugify } from './common-utils';
 import {execSync} from 'node:child_process';
+import { globSync } from "node:fs";
+import { join } from "node:path";
 
 export function sortItemsByDateDesc(itemA: CollectionEntry<'posts' | 'projects'>, itemB: CollectionEntry<'posts' | 'projects'>) {
     const itemAPublishDate = getGitPublishDate(itemA.id);
@@ -32,14 +34,18 @@ export async function getPostsByProject(projectId: string) {
     return posts.filter((post) => post.data.project?.id === projectId);
 }
 
-export function getGitPublishDate(fp: string) {
+// this takes either a project or post id
+export function getGitPublishDate(id: string) {
+    // absolute from project root
+    // note that this means we can't have duplicate ids across posts vs projects. i think this is ok
+    const absoluteFilePath = globSync(join(process.cwd(), 'src/content/**', `${id}.{md,mdx}`))
     try {
         const output = execSync(
-            `git log -1 --format=%aI -- "${fp}"`, {encoding: 'utf-8'}
+            `git log --follow --diff-filter=A --format=%aI -- "${absoluteFilePath}"`, {encoding: 'utf-8'}
         ).trim();
         return output ? new Date(output) : new Date();
     } catch (e) {
-        console.warn(`An error occurred getting the publish date for ${fp}: ${e?.message}`)
+        console.warn(`An error occurred getting the publish date for ${id}: ${e?.message}`)
         return new Date();
     }
 }
